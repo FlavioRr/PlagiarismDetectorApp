@@ -34,6 +34,7 @@ def upload():
     file1.save(file1_path)
     file2.save(file2_path)
 
+
     model = load_model()
     tfidf_vectorizer_path = 'preprocessing/preprocessed_all_data.pkl'
     _, _, tfidf_vectorizer = joblib.load(tfidf_vectorizer_path)
