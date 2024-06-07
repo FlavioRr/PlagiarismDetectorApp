@@ -6,8 +6,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import javalang
 
 app = Flask(__name__)
-MODEL_PATH = 'model/xgboost_model.pkl'
-UPLOAD_FOLDER = 'uploads'
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model', 'xgboost_model.pkl')
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+TFIDF_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'preprocessing', 'preprocessed_all_data.pkl')
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -34,10 +35,8 @@ def upload():
     file1.save(file1_path)
     file2.save(file2_path)
 
-
     model = load_model()
-    tfidf_vectorizer_path = 'preprocessing/preprocessed_all_data.pkl'
-    _, _, tfidf_vectorizer = joblib.load(tfidf_vectorizer_path)
+    _, _, tfidf_vectorizer = joblib.load(TFIDF_VECTOR_PATH)
 
     def read_java_file(file_path):
         with open(file_path, 'r', encoding='utf-8') as file:
