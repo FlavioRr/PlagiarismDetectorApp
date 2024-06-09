@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>About Plagiarism Detector</title>
+    <title>Acerca del Detector de Plagio</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -16,7 +16,9 @@
             margin-top: 50px;
         }
         
-        h1 {
+        h1,
+        h2,
+        h3 {
             color: #bb86fc;
         }
         
@@ -31,32 +33,121 @@
         .nav-link:hover {
             color: #bb86fc !important;
         }
+        
+        .card {
+            background-color: #1e1e1e;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .card-body {
+            color: #ffffff;
+        }
+        
+        .card img {
+            max-width: 100%;
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">Plagiarism Detector</a>
+        <a class="navbar-brand" href="#">Detector de Plagio</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    <a class="nav-link" href="{{ url_for('index') }}">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('intro') }}">About</a>
+                    <a class="nav-link" href="{{ url_for('intro') }}">Acerca de</a>
                 </li>
             </ul>
         </div>
     </nav>
     <div class="container">
-        <h1>About Plagiarism Detector</h1>
-        <p>This application helps detect plagiarism in Java code. It compares the structure of two Java files and uses machine learning algorithms to determine if the code is similar enough to be considered plagiarized.</p>
-        <p>Plagiarism is a serious issue in academic and professional settings. It involves taking someone else's work or ideas and presenting them as your own. This application aims to help combat this problem by providing a tool to detect potential plagiarism
-            in Java code submissions.</p>
-        <p>The model was created and trained by Flavio Ruvalcaba Leija. If you have any questions or feedback, please feel free to reach out.</p>
+        <h1>Acerca del Detector de Plagio</h1>
+
+        <!-- Sección de Introducción -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>Introducción</h2>
+                <p>Esta aplicación ayuda a detectar plagio en código Java. Compara la estructura de dos archivos Java y utiliza algoritmos de aprendizaje automático para determinar si el código es lo suficientemente similar como para ser considerado plagio.</p>
+                <p>El plagio es un problema serio en entornos académicos y profesionales. Involucra tomar el trabajo o las ideas de otra persona y presentarlas como propias. Esta aplicación tiene como objetivo ayudar a combatir este problema proporcionando
+                    una herramienta para detectar posibles plagios en entregas de código Java.</p>
+                <p>El modelo fue creado y entrenado por Flavio Ruvalcaba Leija. Si tienes alguna pregunta o comentario, no dudes en contactarme.</p>
+            </div>
+        </div>
+
+        <!-- Sección de Cómo Funciona -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>Cómo Funciona</h2>
+                <p>La aplicación funciona comparando los árboles de sintaxis abstracta (AST) de dos archivos Java. El AST representa la estructura del código, lo que ayuda a identificar similitudes incluso si el código no es idéntico palabra por palabra.</p>
+                <h3>Pasos:</h3>
+                <ul>
+                    <li><b>Subir Archivos:</b> Los usuarios suben dos archivos Java para ser comparados.</li>
+                    <li><b>Extraer Nodos AST:</b> La aplicación extrae los nodos AST de los archivos Java.</li>
+                    <li><b>Vectorización:</b> Los nodos AST se vectorizan usando TF-IDF.</li>
+                    <li><b>Cálculo de Características:</b> Se calculan características adicionales como la similitud de Jaccard y la distancia de Manhattan.</li>
+                    <li><b>Predicción:</b> Las características se introducen en un modelo XGBoost preentrenado para determinar si los archivos son plagiados.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección de Herramientas y Tecnologías -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>Herramientas y Tecnologías</h2>
+                <h3>Frontend:</h3>
+                <ul>
+                    <li>HTML, CSS, Bootstrap para el diseño</li>
+                    <li>JavaScript para la interactividad</li>
+                </ul>
+                <h3>Backend:</h3>
+                <ul>
+                    <li>Flask - un framework ligero de aplicaciones web WSGI en Python</li>
+                </ul>
+                <h3>Machine Learning:</h3>
+                <ul>
+                    <li>XGBoost - una biblioteca optimizada de gradient boosting distribuido</li>
+                    <li>Scikit-learn - para la vectorización y otras utilidades</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección de Entrenamiento del Modelo -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>Entrenamiento del Modelo</h2>
+                <p>El modelo fue entrenado siguiendo estos pasos:</p>
+                <h3>Preprocesamiento de Datos:</h3>
+                <ul>
+                    <li>Extracción de nodos AST de archivos Java</li>
+                    <li>Vectorización de nodos AST usando TF-IDF</li>
+                    <li>Cálculo de características adicionales (similitud de Jaccard y distancia de Manhattan)</li>
+                    <li>Manejo del desequilibrio de clases usando SMOTE</li>
+                </ul>
+                <h3>Entrenamiento del Modelo:</h3>
+                <ul>
+                    <li>División de los datos en conjuntos de entrenamiento y prueba</li>
+                    <li>Entrenamiento del modelo XGBoost en el conjunto de entrenamiento</li>
+                    <li>Evaluación del modelo usando precisión, recall y puntuación F1</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Sección de Conclusión -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2>Conclusión</h2>
+                <p>Este proyecto muestra el uso de aprendizaje automático y tecnologías web para construir una herramienta práctica para detectar plagio en código Java. La combinación de extracción de AST, cálculo de características y entrenamiento del modelo
+                    con XGBoost proporciona una solución robusta a este problema.</p>
+                <p>Si tienes alguna pregunta o comentario, por favor contacta al autor de esta aplicación, Flavio Ruvalcaba Leija.</p>
+            </div>
+        </div>
+
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

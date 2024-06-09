@@ -41,7 +41,7 @@ def extract_ast_nodes(code):
                 ast_nodes.append(node.__class__.__name__)
         return ' '.join(ast_nodes)
     except (javalang.parser.JavaSyntaxError, javalang.tokenizer.LexerError) as e:
-        print(f"Error parsing Java code: {e}")
+        print(f"Error al analizar el código Java: {e}")
         return ''
 
 @app.route('/')
@@ -55,11 +55,14 @@ def intro():
 @app.route('/upload', methods=['POST'])
 def upload():
     if 'file1' not in request.files or 'file2' not in request.files:
-        return 'No files uploaded', 400
+        return 'No se subieron archivos', 400
 
     file1 = request.files['file1']
     file2 = request.files['file2']
     
+    if not file1.filename.endswith('.java') or not file2.filename.endswith('.java'):
+        return 'Por favor, sube solo archivos .java', 400
+
     file1_path = os.path.join(UPLOAD_FOLDER, file1.filename)
     file2_path = os.path.join(UPLOAD_FOLDER, file2.filename)
     file1.save(file1_path)
@@ -89,10 +92,10 @@ def upload():
         combined_features = np.hstack((combined_features.toarray(), additional_features))
 
         prediction = model.predict(combined_features)
-        result = "Plagiarism" if prediction[0] == 1 else "No Plagiarism"
+        result = "Plagio" if prediction[0] == 1 else "No Plagio"
         return render_template('result.html', result=result)
     else:
-        return 'Error: AST extraction failed for one or both files.', 400
+        return 'Error: la extracción del AST falló para uno o ambos archivos.', 400
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
