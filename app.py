@@ -72,8 +72,11 @@ def upload():
     file1.save(file1_path)
     file2.save(file2_path)
 
-    model = load_model()
-    tfidf_vectorizer = load_vectorizer()
+    try:
+        model = load_model()
+        tfidf_vectorizer = load_vectorizer()
+    except FileNotFoundError as e:
+        return str(e), 500
 
     code1 = read_java_file(file1_path)
     code2 = read_java_file(file2_path)
