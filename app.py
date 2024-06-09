@@ -14,11 +14,15 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 def load_model():
+    if not os.path.exists(MODEL_PATH):
+        raise FileNotFoundError(f"Model file not found: {MODEL_PATH}")
     with open(MODEL_PATH, 'rb') as file:
         model = joblib.load(file)
     return model
 
 def load_vectorizer():
+    if not os.path.exists(TFIDF_VECTOR_PATH):
+        raise FileNotFoundError(f"Vectorizer file not found: {TFIDF_VECTOR_PATH}")
     with open(TFIDF_VECTOR_PATH, 'rb') as file:
         data = joblib.load(file)
         tfidf_vectorizer = data[2]  # Suponiendo que el vectorizador es el tercer elemento
