@@ -1,13 +1,13 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 import os
 import joblib
 import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
 import javalang
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model', 'xgboost_model.pkl')
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model', 'xgboost_model.pkl')
 TFIDF_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'preprocessing', 'preprocessed_all_data.pkl')
 
 if not os.path.exists(UPLOAD_FOLDER):
@@ -18,9 +18,39 @@ def load_model():
         model = joblib.load(file)
     return model
 
+def load_vectorizer():
+    with open(TFIDF_VECTOR_PATH, 'rb') as file:
+        data = joblib.load(file)
+        tfidf_vectorizer = data[2]  # Suponiendo que el vectorizador es el tercer elemento
+    return tfidf_vectorizer
+
+def read_java_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        content = file.read()
+    return content
+
+def extract_ast_nodes(code):
+    try:
+        tokens = list(javalang.tokenizer.tokenize(code))
+        parser = javalang.parser.Parser(tokens)
+        tree = parser.parse()
+
+        ast_nodes = []
+        for path, node in tree:
+            if isinstance(node, javalang.tree.Node):
+                ast_nodes.append(node.__class__.__name__)
+        return ' '.join(ast_nodes)
+    except (javalang.parser.JavaSyntaxError, javalang.tokenizer.LexerError) as e:
+        print(f"Error parsing Java code: {e}")
+        return ''
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/intro')
+def intro():
+    return render_template('intro.html')
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -36,26 +66,7 @@ def upload():
     file2.save(file2_path)
 
     model = load_model()
-    _, _, tfidf_vectorizer = joblib.load(TFIDF_VECTOR_PATH)
-
-    def read_java_file(file_path):
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return file.read()
-
-    def extract_ast_nodes(code):
-        try:
-            tokens = list(javalang.tokenizer.tokenize(code))
-            parser = javalang.parser.Parser(tokens)
-            tree = parser.parse()
-
-            ast_nodes = []
-            for path, node in tree:
-                if isinstance(node, javalang.tree.Node):
-                    ast_nodes.append(node.__class__.__name__)
-            return ' '.join(ast_nodes)
-        except (javalang.parser.JavaSyntaxError, javalang.tokenizer.LexerError) as e:
-            print(f"Error parsing Java code: {e}")
-            return ''
+    tfidf_vectorizer = load_vectorizer()
 
     code1 = read_java_file(file1_path)
     code2 = read_java_file(file2_path)

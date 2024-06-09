@@ -1,23 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Plagiarism Detector</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        
+        .container {
+            margin-top: 50px;
+        }
+        
+        .form-control {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            border: 1px solid #3a3a3a;
+        }
+        
+        .btn-primary {
+            background-color: #6200ea;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3700b3;
+        }
+        
+        h1 {
+            color: #bb86fc;
+        }
+        
+        .navbar {
+            background-color: #1e1e1e;
+        }
+        
+        .nav-link {
+            color: #ffffff !important;
+        }
+        
+        .nav-link:hover {
+            color: #bb86fc !important;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Plagiarism Detector</h1>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <label for="file1">Upload first Java file:</label>
-        <input type="file" id="file1" name="file1" required>
-        <br><br>
-        <label for="file2">Upload second Java file:</label>
-        <input type="file" id="file2" name="file2" required>
-        <br><br>
-        <button type="submit">Check Plagiarism</button>
-    </form>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">Plagiarism Detector</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('intro') }}">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="text-center">Plagiarism Detector</h1>
+        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file1">Upload Java File 1</label>
+                <input type="file" class="form-control" id="file1" name="file1" required>
+            </div>
+            <div class="form-group">
+                <label for="file2">Upload Java File 2</label>
+                <input type="file" class="form-control" id="file2" name="file2" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

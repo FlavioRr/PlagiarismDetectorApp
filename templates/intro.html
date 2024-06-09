@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Plagiarism Detector Result</title>
+    <title>About Plagiarism Detector</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -18,15 +18,6 @@
         
         h1 {
             color: #bb86fc;
-        }
-        
-        .btn-primary {
-            background-color: #6200ea;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background-color: #3700b3;
         }
         
         .navbar {
@@ -60,10 +51,12 @@
             </ul>
         </div>
     </nav>
-    <div class="container text-center">
-        <h1>Plagiarism Detector Result</h1>
-        <p class="lead">{{ result }}</p>
-        <a href="{{ url_for('index') }}" class="btn btn-primary">Go Back</a>
+    <div class="container">
+        <h1>About Plagiarism Detector</h1>
+        <p>This application helps detect plagiarism in Java code. It compares the structure of two Java files and uses machine learning algorithms to determine if the code is similar enough to be considered plagiarized.</p>
+        <p>Plagiarism is a serious issue in academic and professional settings. It involves taking someone else's work or ideas and presenting them as your own. This application aims to help combat this problem by providing a tool to detect potential plagiarism
+            in Java code submissions.</p>
+        <p>The model was created and trained by Flavio Ruvalcaba Leija. If you have any questions or feedback, please feel free to reach out.</p>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
