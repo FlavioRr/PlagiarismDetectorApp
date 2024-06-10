@@ -6,33 +6,22 @@ import javalang
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
-
-# Directorio base
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
-MODEL_PATH = os.path.join(BASE_DIR, 'model', 'xgboost_model.pkl')
-TFIDF_VECTOR_PATH = os.path.join(BASE_DIR, 'Preprocessing', 'preprocessed_all_data.pkl')
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model', 'xgboost_model.pkl')
+TFIDF_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'Preprocessing', 'preprocessed_all_data.pkl')
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 def load_model():
-    print(f"Verificando la ruta del modelo: {MODEL_PATH}")
-    if not os.path.exists(MODEL_PATH):
-        raise FileNotFoundError(f"Archivo del modelo no encontrado: {MODEL_PATH}")
     with open(MODEL_PATH, 'rb') as file:
         model = joblib.load(file)
-    print("Modelo cargado exitosamente")
     return model
 
 def load_vectorizer():
-    print(f"Verificando la ruta del vectorizador: {TFIDF_VECTOR_PATH}")
-    if not os.path.exists(TFIDF_VECTOR_PATH):
-        raise FileNotFoundError(f"Archivo del vectorizador no encontrado: {TFIDF_VECTOR_PATH}")
     with open(TFIDF_VECTOR_PATH, 'rb') as file:
         data = joblib.load(file)
         tfidf_vectorizer = data[2]  # Suponiendo que el vectorizador es el tercer elemento
-    print("Vectorizador cargado exitosamente")
     return tfidf_vectorizer
 
 def read_java_file(file_path):
@@ -79,11 +68,8 @@ def upload():
     file1.save(file1_path)
     file2.save(file2_path)
 
-    try:
-        model = load_model()
-        tfidf_vectorizer = load_vectorizer()
-    except FileNotFoundError as e:
-        return str(e), 500
+    model = load_model()
+    tfidf_vectorizer = load_vectorizer()
 
     code1 = read_java_file(file1_path)
     code2 = read_java_file(file2_path)
@@ -112,5 +98,5 @@ def upload():
         return 'Error: la extracción del AST falló para uno o ambos archivos.', 400
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
