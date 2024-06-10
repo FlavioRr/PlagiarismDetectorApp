@@ -1,5 +1,5 @@
+from flask import Flask, request, render_template, redirect, url_for
 import os
-from flask import Flask, request, render_template
 import joblib
 import numpy as np
 import javalang
@@ -19,6 +19,7 @@ def load_model():
         raise FileNotFoundError(f"Archivo del modelo no encontrado: {MODEL_PATH}")
     with open(MODEL_PATH, 'rb') as file:
         model = joblib.load(file)
+    print("Modelo cargado exitosamente")
     return model
 
 def load_vectorizer():
@@ -28,6 +29,7 @@ def load_vectorizer():
     with open(TFIDF_VECTOR_PATH, 'rb') as file:
         data = joblib.load(file)
         tfidf_vectorizer = data[2]  # Suponiendo que el vectorizador es el tercer elemento
+    print("Vectorizador cargado exitosamente")
     return tfidf_vectorizer
 
 def read_java_file(file_path):
