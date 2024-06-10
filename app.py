@@ -6,9 +6,12 @@ import javalang
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
-UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'uploads')
-MODEL_PATH = os.getenv('MODEL_PATH', 'model/xgboost_model.pkl')
-TFIDF_VECTOR_PATH = os.getenv('TFIDF_VECTOR_PATH', 'preprocessing/preprocessed_all_data.pkl')
+
+# Directorio base
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+MODEL_PATH = os.path.join(BASE_DIR, 'model', 'xgboost_model.pkl')
+TFIDF_VECTOR_PATH = os.path.join(BASE_DIR, 'preprocessing', 'preprocessed_all_data.pkl')
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
