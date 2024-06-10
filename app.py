@@ -11,7 +11,7 @@ app = Flask(__name__)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
 MODEL_PATH = os.path.join(BASE_DIR, 'model', 'xgboost_model.pkl')
-TFIDF_VECTOR_PATH = os.path.join(BASE_DIR, 'preprocessing', 'preprocessed_all_data.pkl')
+TFIDF_VECTOR_PATH = os.path.join(BASE_DIR, 'Preprocessing', 'preprocessed_all_data.pkl')
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
