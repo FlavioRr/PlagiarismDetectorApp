@@ -1,28 +1,30 @@
-from flask import Flask, request, render_template, redirect, url_for
 import os
+from flask import Flask, request, render_template
 import joblib
 import numpy as np
 import javalang
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 app = Flask(__name__)
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'uploads')
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'model', 'xgboost_model.pkl')
-TFIDF_VECTOR_PATH = os.path.join(os.path.dirname(__file__), 'preprocessing', 'preprocessed_all_data.pkl')
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'uploads')
+MODEL_PATH = os.getenv('MODEL_PATH', 'model/xgboost_model.pkl')
+TFIDF_VECTOR_PATH = os.getenv('TFIDF_VECTOR_PATH', 'preprocessing/preprocessed_all_data.pkl')
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 def load_model():
+    print(f"Verificando la ruta del modelo: {MODEL_PATH}")
     if not os.path.exists(MODEL_PATH):
-        raise FileNotFoundError(f"Model file not found: {MODEL_PATH}")
+        raise FileNotFoundError(f"Archivo del modelo no encontrado: {MODEL_PATH}")
     with open(MODEL_PATH, 'rb') as file:
         model = joblib.load(file)
     return model
 
 def load_vectorizer():
+    print(f"Verificando la ruta del vectorizador: {TFIDF_VECTOR_PATH}")
     if not os.path.exists(TFIDF_VECTOR_PATH):
-        raise FileNotFoundError(f"Vectorizer file not found: {TFIDF_VECTOR_PATH}")
+        raise FileNotFoundError(f"Archivo del vectorizador no encontrado: {TFIDF_VECTOR_PATH}")
     with open(TFIDF_VECTOR_PATH, 'rb') as file:
         data = joblib.load(file)
         tfidf_vectorizer = data[2]  # Suponiendo que el vectorizador es el tercer elemento
@@ -105,5 +107,5 @@ def upload():
         return 'Error: la extracción del AST falló para uno o ambos archivos.', 400
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.getenv('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
